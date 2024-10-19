@@ -1,0 +1,197 @@
+<header class="header">
+  <nav class="nav">
+    <img
+      style="height: 50px"
+      src="assets/img/logo.png"
+      alt="Logo"
+      class="brand-logo"
+    />
+  </nav>
+</header>
+
+<div class="container">
+  <div class="block hero-block">
+    <div class="hero">
+      <div class="hero__text">
+        <h1 class="hero__heading">Unfold the <br />Coolness!</h1>
+        <p class="paragraph">Cinematic Creations for Every Brand</p>
+        <button class="cta" (click)="contactMe()">Reach out</button>
+      </div>
+      <div class="hero__img">
+        <img
+          class="hero__img--1"
+          src="assets/img/post-1.jpg"
+          style="height: 400px"
+        />
+        <img
+          class="hero__img--2"
+          src="assets/img/post-4.jpg"
+          style="height: 140px"
+        />
+        <img
+          class="hero__img--3"
+          src="assets/img/header-pttrn.svg"
+          alt="pattern"
+        />
+        <img
+          class="hero__img--4"
+          src="assets/img/post-2.jpg"
+          style="height: 170px"
+        />
+        <img
+          class="hero__img--5"
+          src="assets/img/post-3.jpg"
+          style="height: 210px"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="places">
+      <div class="places__text">
+        <h2 class="heading-2 fancy-heading">✨ Featured Favorites ✨</h2>
+        <h1 class="heading-1">Most Loved</h1>
+        <p class="paragraph">
+          Dive into my world and discover<br />work that resonate with my heart
+          and yours!
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="block" *ngFor="let video of videoPosts">
+    <div class="places">
+      <div>
+        <h4 class="heading-4">{{ video?.brandWork }}</h4>
+        <h3 class="heading-3">{{ video.brandName }}</h3>
+      </div>
+      <div class="places__destination">
+        <div class="places__destination--left">
+          <video
+            class="brand-video"
+            controls
+            [src]="video.videoLink"
+            preload="metadata"
+            autoplay
+            muted
+            loop
+          ></video>
+        </div>
+        <div class="places__destination--right">
+          <img
+            class="brand-img"
+            [src]="video.imageLink"
+            alt="{{ video.brandName }}"
+          />
+          <article *ngIf="video.description">
+            <img src="assets/img/places-pttrn.svg" alt="pattern" />
+            <aside>
+              <p>{{ video.description }}</p>
+            </aside>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="places">
+      <div class="places__text">
+        <h1 class="heading-1">📸Want to see more?</h1>
+        <p class="paragraph">
+          Check out my Instagram profile for more amazing content! 🌟
+          <a
+            href="https://www.instagram.com/auroraa_gleam"
+            target="_blank"
+            class="fancy-heading"
+          >
+            Fatima Saif
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="facts">
+      <div class="facts__left">
+        <h2 class="heading-2 fancy-heading">✨Service✨</h2>
+        <h1 class="heading-1">Work Mode</h1>
+        <p class="paragraph">Embark on a Journey of Distinction</p>
+        <h1 class="heading-1"></h1>
+      </div>
+      <div class="facts__right">
+        <div class="fact__1">
+          <p>
+            Engaging photos, videos, and written content crafted to resonate
+            with your audience.
+          </p>
+        </div>
+        <div class="fact__2">
+          <p>
+            Partnering with other influencers to expand your brand's reach and
+            authenticity.
+          </p>
+        </div>
+        <div class="fact__3">
+          <p>
+            Showcasing your products in a captivating way to highlight their
+            unique features.
+          </p>
+        </div>
+        <div class="fact__4">
+          <p>
+            Keeping you updated on trends to ensure your brand stays relevant
+            and engaging.
+          </p>
+        </div>
+        <div class="fact__5">
+          <p>
+            Leading creative projects from start to finish for cohesive brand
+            messaging.
+          </p>
+        </div>
+        <div class="fact__6">
+          <p>Encouraging and showcasing authentic content to your audience.</p>
+        </div>
+        <div class="fact__7">
+          <p>
+            Management of your brand’s presence across platforms like Instagram,
+            TikTok, and YouTube.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="end">
+      <p class="paragraph">you’ve reached<br />the end of this</p>
+      <h1 class="heading-1">experi-<br />ence</h1>
+      <p class="fancy-heading">
+        Made With Love For
+        <a
+          href="https://www.instagram.com/auroraa_gleam"
+          target="_blank"
+          class="fancy-heading"
+        >
+          Fatima Saif
+        </a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <img
+    src="assets/img/progress-bar.svg"
+    alt="progress bar"
+    class="footer__progress"
+  />
+  <img
+    src="assets/img/footer-pttrn.svg"
+    alt="pattern"
+    class="footer__pattern"
+  />
+</footer>

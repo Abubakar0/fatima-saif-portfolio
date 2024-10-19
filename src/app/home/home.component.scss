@@ -1,0 +1,38 @@
+.container {
+  overflow-x: auto;
+  height: 100vh;
+  display: flex;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.block {
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+  align-items: center;
+  display: flex;
+  height: 100vh;
+}
+
+.hero-block {
+  min-width: 100vw;
+}
+
+.fancy-heading {
+  font-family: "Cursive", sans-serif;
+  color: #f199ff;
+}
+
+.brand-img {
+  width: 205px;
+  height: 230px;
+  object-fit: cover;
+}
+.brand-video {
+  width: 235px;
+  height: 420px;
+  border-radius: 8px;
+}

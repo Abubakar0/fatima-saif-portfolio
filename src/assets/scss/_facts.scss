@@ -1,0 +1,67 @@
+.facts {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, min-content);
+  grid-column-gap: 8rem;
+  align-items: center;
+  margin-left: 5rem;
+  &__left {
+    grid-column: 1/2;
+  }
+
+  &__right {
+    margin-top: 10rem;
+    grid-column: 2/3;
+    background-image: url("../img/fact-pttrn.svg");
+    background-size: cover;
+    position: relative;
+    padding: 5rem;
+    min-height: 40rem;
+    min-width: 120rem;
+
+    div {
+      background-image: url("../img/fact-rect.svg");
+      padding: 3.5rem 2rem 2rem 2rem;
+      background-repeat: no-repeat;
+      background-size: contain;
+      width: 25rem;
+      height: 12rem;
+      position: absolute;
+    }
+
+    p {
+      @extend .paragraph;
+      white-space: normal;
+    }
+
+    .fact__1 {
+      top: 0%;
+      left: 3%;
+    }
+    .fact__2 {
+      top: 15%;
+      left: 26%;
+    }
+    .fact__3 {
+      top: 8%;
+      left: 50%;
+    }
+    .fact__6 {
+      top: 2%;
+      left: 75%;
+    }
+    .fact__4 {
+      top: 58%;
+      left: 15%;
+    }
+    .fact__5 {
+      top: 65%;
+      left: 45%;
+    }
+    .fact__7 {
+      top: 45%;
+      left: 70%;
+    }
+  }
+}
