@@ -108,12 +108,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     const touchMoveHandler = (event: TouchEvent) => {
       if (!this.isTouching) return;
+
       const y = event.touches[0].pageY;
-      const walk = (y - this.startY) * this.scrollSensitivity * 3; // Increase sensitivity
-      container.scrollLeft = this.scrollLeft - walk; // Scroll horizontally based on vertical swipe
+      const targetScrollPosition =
+        this.scrollLeft - (y - this.startY) * this.scrollSensitivity; // Calculate target position
+      const scrollStep = (targetScrollPosition - container.scrollLeft) * 0.1; // Damping factor
+
+      // Update scroll position in small increments for smooth effect
+      const smoothScroll = () => {
+        if (Math.abs(targetScrollPosition - container.scrollLeft) > 0.5) {
+          container.scrollLeft += scrollStep;
+          requestAnimationFrame(smoothScroll);
+        }
+      };
+
+      requestAnimationFrame(smoothScroll);
 
       // Prevent default only if there's movement
-      if (Math.abs(walk) > 0) {
+      if (Math.abs(scrollStep) > 0) {
         event.preventDefault();
       }
     };
