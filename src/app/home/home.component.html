@@ -18,38 +18,22 @@
         <button class="cta" (click)="contactMe()">Reach out</button>
       </div>
       <div class="hero__img">
-        <img
-          class="hero__img--1"
-          src="assets/img/post-1.jpg"
-          style="height: 400px"
-        />
-        <img
-          class="hero__img--2"
-          src="assets/img/post-4.jpg"
-          style="height: 140px"
-        />
+        <img class="hero__img--1" src="assets/img/post-1.jpg" />
+        <img class="hero__img--2" src="assets/img/post-4.jpg" />
         <img
           class="hero__img--3"
           src="assets/img/header-pttrn.svg"
           alt="pattern"
         />
-        <img
-          class="hero__img--4"
-          src="assets/img/post-2.jpg"
-          style="height: 170px"
-        />
-        <img
-          class="hero__img--5"
-          src="assets/img/post-3.jpg"
-          style="height: 210px"
-        />
+        <img class="hero__img--4" src="assets/img/post-2.jpg" />
+        <img class="hero__img--5" src="assets/img/post-3.jpg" />
       </div>
     </div>
   </div>
 
   <div class="block">
-    <div class="places">
-      <div class="places__text">
+    <div class="content">
+      <div class="content__text">
         <h2 class="heading-2 fancy-heading">✨ Featured Favorites ✨</h2>
         <h1 class="heading-1">Most Loved</h1>
         <p class="paragraph">
@@ -61,13 +45,13 @@
   </div>
 
   <div class="block" *ngFor="let video of videoPosts">
-    <div class="places">
+    <div class="content">
       <div>
         <h4 class="heading-4">{{ video?.brandWork }}</h4>
         <h3 class="heading-3">{{ video.brandName }}</h3>
       </div>
-      <div class="places__destination">
-        <div class="places__destination--left">
+      <div class="content__container">
+        <div class="content__container--left">
           <video
             class="brand-video"
             controls
@@ -78,7 +62,7 @@
             loop
           ></video>
         </div>
-        <div class="places__destination--right">
+        <div class="content__container--right">
           <img
             class="brand-img"
             [src]="video.imageLink"
@@ -96,8 +80,32 @@
   </div>
 
   <div class="block">
-    <div class="places">
-      <div class="places__text">
+    <div class="content">
+      <div class="content__text">
+        <h1 class="heading-1">Fresh Outta My Lens!</h1>
+        <p class="paragraph">Here’s a glimpse of my latest creations 📸</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="image-grid">
+      <img src="assets/img/post-14.jpg" alt="Image 1" />
+      <img src="assets/img/post-15.jpg" alt="Image 2" />
+      <img src="assets/img/post-9.jpg" alt="Image 3" />
+      <img src="assets/img/post-17.jpg" alt="Image 4" />
+      <img src="assets/img/post-18.jpg" alt="Image 5" />
+      <img src="assets/img/post-19.jpg" alt="Image 6" />
+      <img src="assets/img/post-20.jpg" alt="Image 7" />
+      <img src="assets/img/post-21.jpg" alt="Image 8" />
+      <img src="assets/img/post-22.jpg" alt="Image 9" />
+      <img src="assets/img/post-26.jpg" alt="Image 10" />
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="content">
+      <div class="content__text">
         <h1 class="heading-1">📸Want to see more?</h1>
         <p class="paragraph">
           Check out my Instagram profile for more amazing content! 🌟
@@ -116,7 +124,7 @@
   <div class="block">
     <div class="facts">
       <div class="facts__left">
-        <h2 class="heading-2 fancy-heading">✨Service✨</h2>
+        <h2 class="heading-2 fancy-heading">✨Services✨</h2>
         <h1 class="heading-1">Work Mode</h1>
         <p class="paragraph">Embark on a Journey of Distinction</p>
         <h1 class="heading-1"></h1>

@@ -110,6 +110,9 @@ body {
 .paragraph {
   font-size: 1.3rem;
   color: #d4d4d4;
+  @media only screen and (max-width: 767px) {
+    max-width: 320px;
+  }
 }
 
 .heading-1 {
@@ -122,6 +125,10 @@ body {
 
   span {
     color: $tertiary-color;
+  }
+
+  @media only screen and (max-width: 767px) {
+    max-width: 320px;
   }
 }
 

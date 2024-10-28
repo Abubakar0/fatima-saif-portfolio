@@ -32,10 +32,12 @@
     &--1 {
       left: 0;
       top: 0;
+      height: 400px;
     }
     &--2 {
       left: 33rem;
       top: -1rem;
+      height: 140px;
     }
     &--3 {
       left: 33rem;
@@ -44,10 +46,59 @@
     &--4 {
       left: 46rem;
       top: 9rem;
+      height: 170px;
     }
     &--5 {
       left: 33rem;
       top: 27rem;
+      height: 210px;
+    }
+  }
+}
+@media only screen and (max-width: 767px) {
+  .hero {
+    margin-left: -20px;
+    grid-template-columns: 1fr;
+
+    .hero__heading {
+      margin-right: 20px;
+      font-size: 6rem;
+      font-family: $tertiary-font;
+      line-height: 7rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero__text {
+      align-self: flex-start;
+      margin-top: 165px;
+    }
+
+    &__img {
+      &--1 {
+        left: -378px;
+        top: 220px;
+        height: 220px;
+      }
+      &--2 {
+        left: -200px;
+        top: 440px;
+        height: 210px;
+      }
+      &--3 {
+        left: -180px;
+        top: 335px;
+        height: 95px;
+      }
+      &--4 {
+        left: -378px;
+        top: 455px;
+        height: 197px;
+      }
+      &--5 {
+        left: -185px;
+        top: 135px;
+        height: 185px;
+      }
     }
   }
 }
