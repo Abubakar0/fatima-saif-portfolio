@@ -16,6 +16,10 @@ export interface VideoPost {
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   private observer: IntersectionObserver | null = null;
+  private startY = 0;
+  private scrollLeft = 0;
+  private isTouching = false;
+  private cleanup: () => void = () => {};
 
   videoPosts: VideoPost[] = [
     {
@@ -34,14 +38,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     },
     {
       videoLink: 'assets/vid/video-2.mp4',
-      brandName: 'TV Parlour Cosmetics',
+      brandName: 'TV Parlour ',
       description: 'Description goes here.',
       imageLink: 'assets/img/post-7.jpg',
       brandWork: 'Brand',
     },
     {
       videoLink: 'assets/vid/video-3.mp4',
-      brandName: 'Sabraaapa Cosmetics',
+      brandName: 'Sabraaapa ',
       description: 'Description goes here.',
       imageLink: 'assets/img/post-6.jpg',
       brandWork: 'Brand',
@@ -84,25 +88,55 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private addScrollListener() {
+    const container = this.el.nativeElement.querySelector('.container');
+
+    // Handle wheel event for desktop (scrolls horizontally on vertical scroll)
     const scrollHandler = (event: WheelEvent) => {
-      const container = this.el.nativeElement.querySelector('.container');
-      if (container) {
-        // Prevent default vertical scrolling
-        event.preventDefault();
-
-        // Scroll horizontally based on vertical scroll amount
-        const scrollAmount = event.deltaY; // Get vertical scroll amount
-        container.scrollLeft += scrollAmount; // Move horizontally
-      }
+      event.preventDefault(); // Prevent default vertical scrolling
+      const scrollAmount = event.deltaY; // Get vertical scroll amount
+      container.scrollLeft += scrollAmount; // Move container horizontally
     };
 
-    // Add the scroll event listener manually with passive set to false
-    window.addEventListener('wheel', scrollHandler, { passive: false });
+    // Handle touch event for mobile (scrolls horizontally on vertical swipe)
+    const touchStartHandler = (event: TouchEvent) => {
+      this.isTouching = true;
+      this.startY = event.touches[0].pageY;
+      this.scrollLeft = container.scrollLeft;
+    };
 
-    // Clean up the event listener when the component is destroyed
-    return () => {
+    const touchMoveHandler = (event: TouchEvent) => {
+      if (!this.isTouching) return;
+      event.preventDefault(); // Prevent default vertical scrolling
+      const y = event.touches[0].pageY;
+      const walk = y - this.startY; // Calculate vertical movement
+      container.scrollLeft = this.scrollLeft - walk; // Scroll horizontally based on vertical swipe
+    };
+
+    const touchEndHandler = () => {
+      this.isTouching = false;
+    };
+
+    // Add listeners
+    window.addEventListener('wheel', scrollHandler, { passive: false }); // Desktop scroll
+    container.addEventListener('touchstart', touchStartHandler, {
+      passive: true,
+    }); // Mobile touch start
+    container.addEventListener('touchmove', touchMoveHandler, {
+      passive: false,
+    }); // Mobile touch move
+    container.addEventListener('touchend', touchEndHandler); // Mobile touch end
+
+    // Clean up listeners when component is destroyed
+    this.cleanup = () => {
       window.removeEventListener('wheel', scrollHandler);
+      container.removeEventListener('touchstart', touchStartHandler);
+      container.removeEventListener('touchmove', touchMoveHandler);
+      container.removeEventListener('touchend', touchEndHandler);
     };
+  }
+
+  ngOnDestroy() {
+    this.cleanup();
   }
 
   private observeBlocks() {
