@@ -1,10 +1,4 @@
-import {
-  Component,
-  AfterViewInit,
-  OnInit,
-  ElementRef,
-  Renderer2,
-} from '@angular/core';
+import { Component, AfterViewInit, OnInit, ElementRef } from '@angular/core';
 import { gsap } from 'gsap';
 
 export interface VideoPost {
@@ -25,9 +19,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private startY = 0;
   private scrollLeft = 0;
   private isTouching = false;
-  private dampingFactor = 0.1; // Adjust for smoothness (lower values are smoother)
-  private scrollVelocity = 0;
-  private animationFrameId: any;
   private scrollSensitivity = 1.5; // Adjust for sensitivity
 
   private cleanup: () => void = () => {};
@@ -84,7 +75,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     },
   ];
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(private el: ElementRef) {}
 
   ngOnInit() {}
 
@@ -101,63 +92,57 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private addScrollListener() {
     const container = this.el.nativeElement.querySelector('.container');
 
-    // Smooth scrolling behavior for desktop
-    const wheelScrollHandler = (event: WheelEvent) => {
-      event.preventDefault();
-      this.scrollVelocity = event.deltaY * this.scrollSensitivity;
-      this.animateScroll(container);
+    // Handle wheel event for desktop (scrolls horizontally on vertical scroll)
+    const scrollHandler = (event: WheelEvent) => {
+      event.preventDefault(); // Prevent default vertical scrolling
+      const scrollAmount = event.deltaY * this.scrollSensitivity; // Increase sensitivity
+      container.scrollLeft += scrollAmount; // Move container horizontally
     };
 
-    // Touch events for smooth scroll on mobile
+    // Handle touch event for mobile (scrolls horizontally on vertical swipe)
     const touchStartHandler = (event: TouchEvent) => {
       this.isTouching = true;
       this.startY = event.touches[0].pageY;
       this.scrollLeft = container.scrollLeft;
-      this.scrollVelocity = 0;
     };
 
     const touchMoveHandler = (event: TouchEvent) => {
       if (!this.isTouching) return;
+      const y = event.touches[0].pageY;
+      const walk = (y - this.startY) * this.scrollSensitivity * 3; // Increase sensitivity
+      container.scrollLeft = this.scrollLeft - walk; // Scroll horizontally based on vertical swipe
 
-      event.preventDefault();
-      const deltaY = event.touches[0].pageY - this.startY;
-      this.scrollVelocity = deltaY * this.scrollSensitivity;
-      container.scrollLeft = this.scrollLeft - deltaY;
+      // Prevent default only if there's movement
+      if (Math.abs(walk) > 0) {
+        event.preventDefault();
+      }
     };
 
     const touchEndHandler = () => {
       this.isTouching = false;
-      this.animateScroll(container);
     };
 
-    // Adding listeners for desktop and mobile
-    window.addEventListener('wheel', wheelScrollHandler, { passive: false });
+    // Add listeners
+    window.addEventListener('wheel', scrollHandler, { passive: false }); // Desktop scroll
     container.addEventListener('touchstart', touchStartHandler, {
       passive: true,
-    });
+    }); // Mobile touch start
     container.addEventListener('touchmove', touchMoveHandler, {
       passive: false,
-    });
-    container.addEventListener('touchend', touchEndHandler);
-  }
+    }); // Mobile touch move
+    container.addEventListener('touchend', touchEndHandler); // Mobile touch end
 
-  private animateScroll(container: HTMLElement) {
-    const animate = () => {
-      if (Math.abs(this.scrollVelocity) > 0.5) {
-        container.scrollLeft += this.scrollVelocity;
-        this.scrollVelocity *= 0.95; // Friction to smooth out scroll
-
-        this.animationFrameId = requestAnimationFrame(animate);
-      } else {
-        cancelAnimationFrame(this.animationFrameId);
-      }
+    // Clean up listeners when component is destroyed
+    this.cleanup = () => {
+      window.removeEventListener('wheel', scrollHandler);
+      container.removeEventListener('touchstart', touchStartHandler);
+      container.removeEventListener('touchmove', touchMoveHandler);
+      container.removeEventListener('touchend', touchEndHandler);
     };
-
-    this.animationFrameId = requestAnimationFrame(animate);
   }
 
   ngOnDestroy() {
-    cancelAnimationFrame(this.animationFrameId);
+    this.cleanup();
   }
 
   private observeBlocks() {
