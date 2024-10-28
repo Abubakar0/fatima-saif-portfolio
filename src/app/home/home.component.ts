@@ -19,6 +19,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private startY = 0;
   private scrollLeft = 0;
   private isTouching = false;
+  private scrollSensitivity = 1.5; // Adjust this factor for faster scrolling
+
   private cleanup: () => void = () => {};
 
   videoPosts: VideoPost[] = [
@@ -93,7 +95,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     // Handle wheel event for desktop (scrolls horizontally on vertical scroll)
     const scrollHandler = (event: WheelEvent) => {
       event.preventDefault(); // Prevent default vertical scrolling
-      const scrollAmount = event.deltaY; // Get vertical scroll amount
+      const scrollAmount = event.deltaY * this.scrollSensitivity; // Increase sensitivity
       container.scrollLeft += scrollAmount; // Move container horizontally
     };
 
@@ -106,10 +108,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     const touchMoveHandler = (event: TouchEvent) => {
       if (!this.isTouching) return;
-      event.preventDefault(); // Prevent default vertical scrolling
       const y = event.touches[0].pageY;
-      const walk = y - this.startY; // Calculate vertical movement
+      const walk = (y - this.startY) * this.scrollSensitivity; // Increase sensitivity
       container.scrollLeft = this.scrollLeft - walk; // Scroll horizontally based on vertical swipe
+
+      // Prevent default only if there's movement
+      if (Math.abs(walk) > 0) {
+        event.preventDefault();
+      }
     };
 
     const touchEndHandler = () => {
