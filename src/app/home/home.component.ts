@@ -16,12 +16,6 @@ export interface VideoPost {
 })
 export class HomeComponent implements OnInit, AfterViewInit {
   private observer: IntersectionObserver | null = null;
-  private startY = 0;
-  private scrollLeft = 0;
-  private isTouching = false;
-  private scrollSensitivity = 1.5; // Adjust for sensitivity
-
-  private cleanup: () => void = () => {};
 
   videoPosts: VideoPost[] = [
     {
@@ -40,14 +34,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
     },
     {
       videoLink: 'assets/vid/video-2.mp4',
-      brandName: 'TV Parlour ',
+      brandName: 'TV Parlour Cosmetics',
       description: 'Description goes here.',
       imageLink: 'assets/img/post-7.jpg',
       brandWork: 'Brand',
     },
     {
       videoLink: 'assets/vid/video-3.mp4',
-      brandName: 'Sabraaapa ',
+      brandName: 'Sabraaapa Cosmetics',
       description: 'Description goes here.',
       imageLink: 'assets/img/post-6.jpg',
       brandWork: 'Brand',
@@ -90,77 +84,25 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   private addScrollListener() {
-    const container = this.el.nativeElement.querySelector('.container');
-    let animationFrameId: number; // To keep track of animation frames
-
-    // Handle wheel event for desktop (scrolls horizontally on vertical scroll)
     const scrollHandler = (event: WheelEvent) => {
-      event.preventDefault(); // Prevent default vertical scrolling
-      const scrollAmount = event.deltaY * this.scrollSensitivity; // Increase sensitivity
-      container.scrollLeft += scrollAmount; // Move container horizontally
-    };
-
-    // Handle touch event for mobile (scrolls horizontally on vertical swipe)
-    const touchStartHandler = (event: TouchEvent) => {
-      this.isTouching = true;
-      this.startY = event.touches[0].pageY;
-      this.scrollLeft = container.scrollLeft;
-    };
-
-    const touchMoveHandler = (event: TouchEvent) => {
-      if (!this.isTouching) return;
-
-      const y = event.touches[0].pageY;
-      const targetScrollPosition =
-        this.scrollLeft - (y - this.startY) * this.scrollSensitivity; // Calculate target position
-      const scrollStep = (targetScrollPosition - container.scrollLeft) * 0.1; // Damping factor
-
-      // Clear any previous frame to prevent multiple animations from stacking up
-      cancelAnimationFrame(animationFrameId);
-
-      // Smoothly scroll towards the target position
-      const smoothScroll = () => {
-        if (Math.abs(targetScrollPosition - container.scrollLeft) > 0.5) {
-          container.scrollLeft += scrollStep;
-          animationFrameId = requestAnimationFrame(smoothScroll);
-        }
-      };
-
-      // Start smooth scrolling
-      smoothScroll();
-
-      // Prevent default if there’s movement
-      if (Math.abs(scrollStep) > 0) {
+      const container = this.el.nativeElement.querySelector('.container');
+      if (container) {
+        // Prevent default vertical scrolling
         event.preventDefault();
+
+        // Scroll horizontally based on vertical scroll amount
+        const scrollAmount = event.deltaY; // Get vertical scroll amount
+        container.scrollLeft += scrollAmount; // Move horizontally
       }
     };
 
-    const touchEndHandler = () => {
-      this.isTouching = false;
-      cancelAnimationFrame(animationFrameId); // Clean up when touch ends
-    };
+    // Add the scroll event listener manually with passive set to false
+    window.addEventListener('wheel', scrollHandler, { passive: false });
 
-    // Add listeners
-    window.addEventListener('wheel', scrollHandler, { passive: false }); // Desktop scroll
-    container.addEventListener('touchstart', touchStartHandler, {
-      passive: true,
-    }); // Mobile touch start
-    container.addEventListener('touchmove', touchMoveHandler, {
-      passive: false,
-    }); // Mobile touch move
-    container.addEventListener('touchend', touchEndHandler); // Mobile touch end
-
-    // Clean up listeners when component is destroyed
-    this.cleanup = () => {
+    // Clean up the event listener when the component is destroyed
+    return () => {
       window.removeEventListener('wheel', scrollHandler);
-      container.removeEventListener('touchstart', touchStartHandler);
-      container.removeEventListener('touchmove', touchMoveHandler);
-      container.removeEventListener('touchend', touchEndHandler);
     };
-  }
-
-  ngOnDestroy() {
-    this.cleanup();
   }
 
   private observeBlocks() {
