@@ -91,6 +91,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   private addScrollListener() {
     const container = this.el.nativeElement.querySelector('.container');
+    let animationFrameId: number; // To keep track of animation frames
 
     // Handle wheel event for desktop (scrolls horizontally on vertical scroll)
     const scrollHandler = (event: WheelEvent) => {
@@ -114,17 +115,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
         this.scrollLeft - (y - this.startY) * this.scrollSensitivity; // Calculate target position
       const scrollStep = (targetScrollPosition - container.scrollLeft) * 0.1; // Damping factor
 
-      // Update scroll position in small increments for smooth effect
+      // Clear any previous frame to prevent multiple animations from stacking up
+      cancelAnimationFrame(animationFrameId);
+
+      // Smoothly scroll towards the target position
       const smoothScroll = () => {
         if (Math.abs(targetScrollPosition - container.scrollLeft) > 0.5) {
           container.scrollLeft += scrollStep;
-          requestAnimationFrame(smoothScroll);
+          animationFrameId = requestAnimationFrame(smoothScroll);
         }
       };
 
-      requestAnimationFrame(smoothScroll);
+      // Start smooth scrolling
+      smoothScroll();
 
-      // Prevent default only if there's movement
+      // Prevent default if there’s movement
       if (Math.abs(scrollStep) > 0) {
         event.preventDefault();
       }
@@ -132,6 +137,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     const touchEndHandler = () => {
       this.isTouching = false;
+      cancelAnimationFrame(animationFrameId); // Clean up when touch ends
     };
 
     // Add listeners
