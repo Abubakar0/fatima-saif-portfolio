@@ -28,6 +28,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private dampingFactor = 0.1; // Adjust for smoothness (lower values are smoother)
   private scrollVelocity = 0;
   private animationFrameId: any;
+  private scrollSensitivity = 1.5; // Adjust for sensitivity
+
   private cleanup: () => void = () => {};
 
   videoPosts: VideoPost[] = [
@@ -99,46 +101,53 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private addScrollListener() {
     const container = this.el.nativeElement.querySelector('.container');
 
-    // Add smooth scrolling behavior for initial desktop support
-    this.renderer.setStyle(container, 'scroll-behavior', 'smooth');
+    // Smooth scrolling behavior for desktop
+    const wheelScrollHandler = (event: WheelEvent) => {
+      event.preventDefault();
+      this.scrollVelocity = event.deltaY * this.scrollSensitivity;
+      this.animateScroll(container);
+    };
 
-    const startTouchHandler = (event: TouchEvent) => {
+    // Touch events for smooth scroll on mobile
+    const touchStartHandler = (event: TouchEvent) => {
       this.isTouching = true;
       this.startY = event.touches[0].pageY;
       this.scrollLeft = container.scrollLeft;
-      this.scrollVelocity = 0; // Reset scroll velocity on new touch
+      this.scrollVelocity = 0;
     };
 
-    const moveTouchHandler = (event: TouchEvent) => {
+    const touchMoveHandler = (event: TouchEvent) => {
       if (!this.isTouching) return;
 
       event.preventDefault();
       const deltaY = event.touches[0].pageY - this.startY;
-      this.scrollVelocity = deltaY * this.dampingFactor; // Add damping effect
-      container.scrollLeft = this.scrollLeft - deltaY; // Adjust the scroll position directly
+      this.scrollVelocity = deltaY * this.scrollSensitivity;
+      container.scrollLeft = this.scrollLeft - deltaY;
     };
 
-    const endTouchHandler = () => {
+    const touchEndHandler = () => {
       this.isTouching = false;
-      this.animateInertiaScroll(container);
+      this.animateScroll(container);
     };
 
-    container.addEventListener('touchstart', startTouchHandler, {
+    // Adding listeners for desktop and mobile
+    window.addEventListener('wheel', wheelScrollHandler, { passive: false });
+    container.addEventListener('touchstart', touchStartHandler, {
       passive: true,
     });
-    container.addEventListener('touchmove', moveTouchHandler, {
+    container.addEventListener('touchmove', touchMoveHandler, {
       passive: false,
     });
-    container.addEventListener('touchend', endTouchHandler);
+    container.addEventListener('touchend', touchEndHandler);
   }
 
-  private animateInertiaScroll(container: HTMLElement) {
+  private animateScroll(container: HTMLElement) {
     const animate = () => {
       if (Math.abs(this.scrollVelocity) > 0.5) {
         container.scrollLeft += this.scrollVelocity;
-        this.scrollVelocity *= 0.95; // Apply friction to slow down scroll
+        this.scrollVelocity *= 0.95; // Friction to smooth out scroll
 
-        this.animationFrameId = requestAnimationFrame(animate); // Continue animation until velocity slows
+        this.animationFrameId = requestAnimationFrame(animate);
       } else {
         cancelAnimationFrame(this.animationFrameId);
       }
