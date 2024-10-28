@@ -55,14 +55,18 @@
     }
 
     &__container {
-      flex-direction: column;
-      align-items: flex-start;
-
       .brand-img {
-        display: none;
+        height: 160px !important;
+        width: 160px !important;
       }
       &--right {
-        margin-left: 0;
+        margin-left: 15px;
+
+        aside {
+          p {
+            max-width: 125px;
+          }
+        }
       }
     }
   }

@@ -70,34 +70,30 @@
 
     .hero__text {
       align-self: flex-start;
-      margin-top: 165px;
+      margin-top: 110px;
     }
 
     &__img {
       &--1 {
-        left: -378px;
-        top: 220px;
-        height: 220px;
+        left: -335px;
+        top: 290px;
+        height: 150px;
       }
       &--2 {
-        left: -200px;
-        top: 440px;
-        height: 210px;
+        left: -120px;
+        top: 355px;
+        height: 150px;
       }
       &--3 {
-        left: -180px;
+        left: -205px;
         top: 335px;
-        height: 95px;
+        height: 90px;
       }
       &--4 {
-        left: -378px;
-        top: 455px;
-        height: 197px;
+        display: none;
       }
       &--5 {
-        left: -185px;
-        top: 135px;
-        height: 185px;
+        display: none;
       }
     }
   }
