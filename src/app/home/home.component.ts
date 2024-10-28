@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   private startY = 0;
   private scrollLeft = 0;
   private isTouching = false;
-  private scrollSensitivity = 1.5; // Adjust this factor for faster scrolling
+  private scrollSensitivity = 3; // Adjust this factor for faster scrolling
 
   private cleanup: () => void = () => {};
 
