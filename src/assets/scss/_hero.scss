@@ -11,10 +11,16 @@
 
     .hero__heading {
       margin-right: 20px;
-      font-size: 8rem;
+      font-size: 6rem;
       font-family: $tertiary-font;
-      line-height: 7rem;
+      line-height: 5rem;
       margin-bottom: 2rem;
+    }
+    .hero__para {
+      font-size: 13px;
+      margin-top: 3rem;
+      max-width: 300px;
+      line-height: 2rem;
     }
   }
 
@@ -68,33 +74,8 @@
       margin-bottom: 2rem;
     }
 
-    .hero__text {
-      align-self: flex-start;
-      margin-top: 110px;
-    }
-
     &__img {
-      &--1 {
-        left: -335px;
-        top: 310px;
-        height: 150px;
-      }
-      &--2 {
-        left: -120px;
-        top: 310px;
-        height: 150px;
-      }
-      &--3 {
-        left: -205px;
-        top: 320px;
-        height: 90px;
-      }
-      &--4 {
-        display: none;
-      }
-      &--5 {
-        display: none;
-      }
+      display: none;
     }
   }
 }
